@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,9 +24,17 @@ class BlogState extends ChangeNotifier {
     const Blog(title: "How does AI work", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: true),
     const Blog(title: "Test-Blog-Title", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false)];
 
-    void addBlog(Blog blog) {
-      blogs.add(blog);
-      notifyListeners();
+    bool addBlog(Blog blog) {
+      Random random = Random();
+
+      if( random.nextInt(10) > 5 )
+      {
+        blogs.add(blog);
+        notifyListeners();
+        return true;
+      }
+
+      return false;
     }
 }
 
@@ -61,7 +71,11 @@ class _BlogPageState extends State<BlogPage> {
           child: FloatingActionButton(
             backgroundColor: const Color(0xFFC5264E),
             onPressed: () {
-              blogState.addBlog(Blog(title: "New Blog ${blogState.blogs.length + 1}", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false));
+              var blog = Blog(title: "New Blog ${blogState.blogs.length + 1}", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: blogState.addBlog(blog) ? const Text('Blog added') : const Text('Error while adding blog'))
+              );
             },
             child: const Icon(Icons.add),
           ),

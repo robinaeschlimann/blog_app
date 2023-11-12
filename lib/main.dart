@@ -4,13 +4,12 @@ import 'blog_page.dart';
 import 'settings_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const BlogApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class BlogApp extends StatelessWidget {
+  const BlogApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+          primaryColor: const Color(0xFFC5264E),
           useMaterial3: true,
         ),
         home: const MyHomePage(title: 'Flutter Demo Home Page'),
