@@ -1,40 +1,22 @@
 import 'dart:math';
 
+import 'package:blog_app/service/blog_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Blog {
-  const Blog({required this.title, required this.preview, required this.image, required this.liked});
-
-  final String title;
-  final String preview;
-  final String image;
-  final bool liked;
-}
+import 'blog.dart';
 
 class BlogState extends ChangeNotifier {
-  var blogs = <Blog>[
-    const Blog(title: "Test-Blog", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: true),
-    const Blog(title: "New Java version", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: true),
-    const Blog(title: "How to Quarkus", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false),
-    const Blog(title: "Spring for Beginners", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false),
-    const Blog(title: "What is Flutter", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false),
-    const Blog(title: "Flutter Best Practices", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: true),
-    const Blog(title: "How to Dart", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: true),
-    const Blog(title: "How does AI work", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: true),
-    const Blog(title: "Test-Blog-Title", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false)];
+    var blogService = BlogService();
 
-    bool addBlog(Blog blog) {
-      Random random = Random();
+    Future<List<Blog>> get blogs async => await blogService.getBlogs();
 
-      if( random.nextInt(10) > 5 )
-      {
-        blogs.add(blog);
-        notifyListeners();
-        return true;
-      }
+    Future<bool> addBlog(Blog blog) async {
 
-      return false;
+      blogService.add(blog);
+      notifyListeners();
+
+      return true;
     }
 }
 
@@ -53,28 +35,52 @@ class _BlogPageState extends State<BlogPage> {
 
     return Stack(
       children: [
-        ListView.separated(
-          padding: const EdgeInsets.all(8),
-          itemCount: blogState.blogs.length,
-          itemBuilder: (BuildContext context, int index) {
-            var blog = blogState.blogs[index];
-            return BlogCard( title: blog.title, preview: blog.preview,
-              image: blog.image, liked: blog.liked);
-          },
-          separatorBuilder: (BuildContext context, int index) {
-            return const Divider();
+        FutureBuilder<List<Blog>>(
+          initialData: const [],
+          future: blogState.blogs,
+          builder: (context, snapshot) {
+            if( snapshot.connectionState == ConnectionState.done )
+            {
+              if( snapshot.hasError ) {
+                return const Center(
+                  child: Text("Error while loading blogs"),
+                );
+              }
+
+              return ListView.separated(
+                padding: const EdgeInsets.all(8),
+                itemCount: snapshot.data!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var blog = snapshot.data![index];
+                  return BlogCard( blog: blog );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const Divider( color: Colors.grey);
+                }
+              );
+
+            }
+            else
+            {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFC5264E),
+                ),
+              );
+            }
           }
         ),
+
         Positioned(
           bottom: 16,
           right: 16,
           child: FloatingActionButton(
             backgroundColor: const Color(0xFFC5264E),
-            onPressed: () {
-              var blog = Blog(title: "New Blog ${blogState.blogs.length + 1}", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false);
-
+            onPressed: () async {
+              Random random = Random();
+              var blog = Blog(title: "New Blog ${random.nextInt(100)}", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false);
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: blogState.addBlog(blog) ? const Text('Blog added') : const Text('Error while adding blog'))
+                SnackBar(content: await blogState.addBlog(blog) ? const Text('Blog added') : const Text('Error while adding blog'))
               );
             },
             child: const Icon(Icons.add),
@@ -86,13 +92,9 @@ class _BlogPageState extends State<BlogPage> {
 }
 
 class BlogCard extends StatelessWidget {
-  const BlogCard({super.key, required this.title, required this.preview,
-    required this.image, required this.liked});
+  const BlogCard({super.key, required this.blog});
 
-  final String title;
-  final String preview;
-  final String image;
-  final bool liked;
+  final Blog blog;
 
   @override
   Widget build(BuildContext context) {
@@ -100,21 +102,21 @@ class BlogCard extends StatelessWidget {
     return Wrap(
       children: [
         Image(
-            image: NetworkImage(image)
+            image: NetworkImage(blog.image)
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(fontSize: 20)),
+              Text(blog.title, style: const TextStyle(fontSize: 20)),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Text(preview),
+                child: Text(blog.preview),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: Icon( liked ? Icons.favorite : Icons.favorite_border, color: const Color( 0xFFC5264E )),
+                child: Icon( blog.liked ? Icons.favorite : Icons.favorite_border, color: const Color( 0xFFC5264E )),
               )
             ],
           ),
