@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Widget menu() {
   return Container(
-    color: Color(0xFFC5264E),
+    color: const Color(0xFFC5264E),
     child: const TabBar(
       indicatorColor: Colors.white,
       tabs: [

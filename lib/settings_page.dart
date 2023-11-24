@@ -11,33 +11,36 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Scaffold(
       body: ListView(
         children: const [
-          ListTile(
-            title: Text("Profile"),
-            leading: Icon(Icons.person),
-            trailing: Icon(Icons.arrow_forward_ios)
-          ),
-          ListTile(
-            title: Text("Favorites"),
-            leading: Icon(Icons.favorite),
-            trailing: Icon(Icons.arrow_forward_ios)
-          ),
-          ListTile(
-              title: Text("Language"),
-              leading: Icon(Icons.language),
-              trailing: Icon(Icons.arrow_forward_ios)
-          ),
-          ListTile(
-              title: Text("Setting X"),
-              leading: Icon(Icons.settings),
-              trailing: Icon(Icons.arrow_forward_ios)
-          )
+          SettingsListTile(title: "Profile", leadingIcon: Icons.person),
+          SettingsListTile(title: "Favorites", leadingIcon: Icons.favorite),
+          SettingsListTile(title: "Language", leadingIcon: Icons.language),
+          SettingsListTile ( title: "Setting XY", leadingIcon: Icons.settings ),
         ]
       ),
     );
   }
 
+}
+
+class SettingsListTile extends StatelessWidget {
+  const SettingsListTile({
+    super.key,
+    required this.title,
+    required this.leadingIcon
+  });
+
+  final String title;
+  final IconData leadingIcon;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+        title: Text(title),
+        leading: Icon(leadingIcon),
+        trailing: const Icon(Icons.arrow_forward_ios)
+    );
+  }
 }
