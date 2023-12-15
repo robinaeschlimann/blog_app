@@ -9,7 +9,7 @@ import 'blog.dart';
 class BlogState extends ChangeNotifier {
     var blogService = BlogService();
 
-    Future<List<Blog>> get blogs async => await blogService.getBlogs();
+    Future<List<Blog>> get blogs async => await blogService.getBlogsApi();
 
     Future<bool> addBlog(Blog blog) async {
 
@@ -71,21 +71,21 @@ class _BlogPageState extends State<BlogPage> {
           }
         ),
 
-        Positioned(
-          bottom: 16,
-          right: 16,
-          child: FloatingActionButton(
-            backgroundColor: const Color(0xFFC5264E),
-            onPressed: () async {
-              Random random = Random();
-              var blog = Blog(title: "New Blog ${random.nextInt(100)}", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: await blogState.addBlog(blog) ? const Text('Blog added') : const Text('Error while adding blog'))
-              );
-            },
-            child: const Icon(Icons.add),
-          ),
-        )
+        // Positioned(
+        //   bottom: 16,
+        //   right: 16,
+        //   child: FloatingActionButton(
+        //     backgroundColor: const Color(0xFFC5264E),
+        //     onPressed: () async {
+        //       Random random = Random();
+        //       var blog = Blog(title: "New Blog ${random.nextInt(100)}", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false);
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         SnackBar(content: await blogState.addBlog(blog) ? const Text('Blog added') : const Text('Error while adding blog'))
+        //       );
+        //     },
+        //     child: const Icon(Icons.add),
+        //   ),
+        // )
     ]);
   }
 
@@ -102,7 +102,7 @@ class BlogCard extends StatelessWidget {
     return Wrap(
       children: [
         Image(
-            image: NetworkImage(blog.image)
+            image: NetworkImage(blog.headerImageUrl)
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
@@ -112,11 +112,11 @@ class BlogCard extends StatelessWidget {
               Text(blog.title, style: const TextStyle(fontSize: 20)),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Text(blog.preview),
+                child: Text(blog.content.length > 100 ? blog.content.substring(0, 100) + "..." : blog.content )
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: Icon( blog.liked ? Icons.favorite : Icons.favorite_border, color: const Color( 0xFFC5264E )),
+                child: Icon( blog.isLikedByMe ? Icons.favorite : Icons.favorite_border, color: const Color( 0xFFC5264E )),
               )
             ],
           ),
