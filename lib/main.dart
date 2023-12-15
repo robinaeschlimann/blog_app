@@ -12,17 +12,30 @@ class BlogApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => BlogState(),
-      child: MaterialApp(
+
+      return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primaryColor: const Color(0xFFC5264E),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color(0xFFC5264E),
+            brightness: Brightness.light,
+          ),
           useMaterial3: true,
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Color(0xFFC5264E),
+            foregroundColor: Colors.white,
+          ),
+          tabBarTheme: const TabBarTheme(
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(
+                color: Color(0xFFC5264E),
+              ),
+            ),
+          ),
+
         ),
         home: const MyHomePage(),
-      )
-    );
+      );
   }
 }
 
@@ -38,12 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      home: DefaultTabController(
+    return DefaultTabController(
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: const Color(0xFFC5264E),
             title: const Text("Blog App"),
             actions: [
               IconButton(
@@ -56,37 +67,41 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
 
                   },
-                  icon: const Icon(Icons.person)),
+                  icon: const Icon(Icons.person)
+              ),
             ],
           ),
-          bottomNavigationBar: menu(),
-          body: const TabBarView(
+          bottomNavigationBar: const NavigationBar(),
+          body: TabBarView(
             children: [
-              BlogPage(),
-              SettingsPage(),
+              ChangeNotifierProvider(create: (context) => BlogState(), child: const BlogPage()),
+              const SettingsPage(),
             ]
           ),
         )
-      )
-    );
+      );
   }
 }
 
-Widget menu() {
-  return Container(
-    color: const Color(0xFFC5264E),
-    child: const TabBar(
-      indicatorColor: Colors.white,
-      tabs: [
-        Tab(
-          text: "Blogs",
-          icon: Icon(Icons.abc_outlined),
-        ),
-        Tab(
-          text: "Settings",
-          icon: Icon(Icons.settings),
-        ),
-      ],
-    ),
-  );
+class NavigationBar extends StatelessWidget {
+  const NavigationBar({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const TabBar(
+          indicatorColor: Colors.white,
+          tabs: [
+            Tab(
+              text: "Blogs",
+              icon: Icon(Icons.abc_outlined),
+            ),
+            Tab(
+              text: "Settings",
+              icon: Icon(Icons.settings),
+            ),
+          ],
+        );
+  }
 }
