@@ -9,11 +9,11 @@ import 'blog.dart';
 class BlogState extends ChangeNotifier {
     var blogService = BlogService();
 
-    Future<List<Blog>> get blogs async => await blogService.getBlogsApi();
+    Future<List<Blog>> get blogs async => await blogService.getBlogs();
 
     Future<bool> addBlog(Blog blog) async {
 
-      blogService.add(blog);
+
       notifyListeners();
 
       return true;
@@ -71,21 +71,17 @@ class _BlogPageState extends State<BlogPage> {
           }
         ),
 
-        // Positioned(
-        //   bottom: 16,
-        //   right: 16,
-        //   child: FloatingActionButton(
-        //     backgroundColor: const Color(0xFFC5264E),
-        //     onPressed: () async {
-        //       Random random = Random();
-        //       var blog = Blog(title: "New Blog ${random.nextInt(100)}", preview: "Lorem ipsum dolor sit amet...", image: "https://picsum.photos/100", liked: false);
-        //       ScaffoldMessenger.of(context).showSnackBar(
-        //         SnackBar(content: await blogState.addBlog(blog) ? const Text('Blog added') : const Text('Error while adding blog'))
-        //       );
-        //     },
-        //     child: const Icon(Icons.add),
-        //   ),
-        // )
+        Positioned(
+          bottom: 16,
+          right: 16,
+          child: FloatingActionButton(
+            backgroundColor: const Color(0xFFC5264E),
+            onPressed: () async {
+
+            },
+            child: const Icon(Icons.add),
+          ),
+        )
     ]);
   }
 
