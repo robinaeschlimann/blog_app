@@ -20,11 +20,11 @@ class Blog {
   factory Blog.fromJson(Map<String, dynamic> json) {
     return switch(json) {
       {
-      '\$id': String id,
-      'title': String title,
-      'content': String content,
-      '\$createdAt': String publishedAt,
-      'headerImageUrl': String? headerImageUrl,
+        '\$id': String id,
+        'title': String title,
+        'content': String content,
+        '\$createdAt': String publishedAt,
+        'headerImageUrl': String? headerImageUrl,
       } =>
           Blog(
             id: id,

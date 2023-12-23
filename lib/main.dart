@@ -13,22 +13,30 @@ class BlogApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+      const primaryColor = Color(0xFFC5264E);
+      const secondaryColor = Colors.white;
+
       return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFFC5264E),
-            brightness: Brightness.light,
+            seedColor: primaryColor,
+            brightness: View.of(context).platformDispatcher.platformBrightness,
           ),
           useMaterial3: true,
           appBarTheme: const AppBarTheme(
-            backgroundColor: Color(0xFFC5264E),
-            foregroundColor: Colors.white,
+            backgroundColor: primaryColor,
+            foregroundColor: secondaryColor,
           ),
-          tabBarTheme: const TabBarTheme(
-            indicator: UnderlineTabIndicator(
+          tabBarTheme: TabBarTheme(
+            overlayColor: MaterialStateProperty.all(const Color(0xFFC5264E)),
+            labelColor: secondaryColor,
+            unselectedLabelColor: Colors.white70,
+
+            indicator: const UnderlineTabIndicator(
               borderSide: BorderSide(
-                color: Color(0xFFC5264E),
+                width: 4.0,
+                color: secondaryColor,
               ),
             ),
           ),
@@ -90,18 +98,21 @@ class NavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TabBar(
-          indicatorColor: Colors.white,
-          tabs: [
-            Tab(
-              text: "Blogs",
-              icon: Icon(Icons.abc_outlined),
-            ),
-            Tab(
-              text: "Settings",
-              icon: Icon(Icons.settings),
-            ),
-          ],
-        );
+    return Material(
+        color: Theme.of(context).colorScheme.primary,
+        child: const TabBar(
+
+        tabs: [
+          Tab(
+            text: "Blogs",
+            icon: Icon(Icons.abc_outlined),
+          ),
+          Tab(
+            text: "Settings",
+            icon: Icon(Icons.settings),
+          ),
+        ],
+      )
+    );
   }
 }
