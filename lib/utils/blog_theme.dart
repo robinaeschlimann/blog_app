@@ -10,11 +10,13 @@ class BlogTheme
     const inactiveColor = Colors.white70;
 
     return ThemeData(
+      useMaterial3: true,
+      primaryColor: primaryColor,
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
+        secondary: secondaryColor,
         brightness: brightnessNotifier.brightness,
       ),
-      useMaterial3: true,
       appBarTheme: const AppBarTheme(
         backgroundColor: primaryColor,
         titleTextStyle: TextStyle(
@@ -46,6 +48,11 @@ class BlogTheme
       dividerTheme: const DividerThemeData(
         color: primaryColor,
         thickness: 1,
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: MaterialStateProperty.all(brightnessNotifier.brightness == Brightness.light ? Colors.grey.shade600 : inactiveColor),
+        trackColor: MaterialStateProperty.all(brightnessNotifier.brightness == Brightness.light ? secondaryColor : primaryColor),
+
       ),
     );
   }

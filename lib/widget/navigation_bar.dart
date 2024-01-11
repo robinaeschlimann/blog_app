@@ -6,7 +6,8 @@ class BlogNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: Theme.of(context).colorScheme.primary,
+        //color: Theme.of(context).colorScheme.primary,
+        color: Theme.of(context).primaryColor,
         child: const TabBar(
           tabs: [
             Tab(
