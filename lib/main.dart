@@ -1,14 +1,20 @@
+import 'package:blog_app/service/theme_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'blog_page.dart';
 import 'settings_page.dart';
 
-void main() {
-  runApp(const BlogApp());
+Future<void> main() async {
+  //var sharedPrefs = await SharedPreferences.getInstance();
+  runApp(ChangeNotifierProvider(
+      create: (_) => BrightnessNotifier.instance,
+      child: const BlogApp()
+  ));
 }
 
 class BlogApp extends StatelessWidget {
   const BlogApp({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -16,33 +22,35 @@ class BlogApp extends StatelessWidget {
       const primaryColor = Color(0xFFC5264E);
       const secondaryColor = Colors.white;
 
-      return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: primaryColor,
-            brightness: View.of(context).platformDispatcher.platformBrightness,
-          ),
-          useMaterial3: true,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: primaryColor,
-            foregroundColor: secondaryColor,
-          ),
-          tabBarTheme: TabBarTheme(
-            overlayColor: MaterialStateProperty.all(const Color(0xFFC5264E)),
-            labelColor: secondaryColor,
-            unselectedLabelColor: Colors.white70,
-
-            indicator: const UnderlineTabIndicator(
-              borderSide: BorderSide(
-                width: 4.0,
-                color: secondaryColor,
+      return Consumer<BrightnessNotifier> (
+          builder: (context, brightness, _) => MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: primaryColor,
+                brightness: brightness.brightness,
               ),
-            ),
-          ),
+              useMaterial3: true,
+              appBarTheme: const AppBarTheme(
+                backgroundColor: primaryColor,
+                foregroundColor: secondaryColor,
+              ),
+              tabBarTheme: TabBarTheme(
+                overlayColor: MaterialStateProperty.all(const Color(0xFFC5264E)),
+                labelColor: secondaryColor,
+                unselectedLabelColor: Colors.white70,
 
-        ),
-        home: const MyHomePage(),
+                indicator: const UnderlineTabIndicator(
+                  borderSide: BorderSide(
+                    width: 4.0,
+                    color: secondaryColor,
+                  ),
+                ),
+              ),
+
+            ),
+            home: const MyHomePage(),
+        )
       );
   }
 }
@@ -83,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
           body: TabBarView(
             children: [
               ChangeNotifierProvider(create: (context) => BlogState(), child: const BlogPage()),
-              const SettingsPage(),
+              ChangeNotifierProvider(create: (context) => SettingsState(), child: const SettingsPage( )),
             ]
           ),
         )
