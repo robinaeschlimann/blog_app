@@ -2,15 +2,12 @@ import 'dart:convert';
 
 import 'package:blog_app/service/storage_manager.dart';
 
-import '../blog.dart';
+import '../data/blog.dart';
 import 'package:http/http.dart' as http;
 
-class BlogApi {
-  // Static instance + private Constructor for simple Singleton-approach
-  static BlogApi instance = BlogApi._privateConstructor();
-  BlogApi._privateConstructor();
-
-  final _blogs = <Blog>[];
+class BlogRepository {
+  static BlogRepository instance = BlogRepository._privateConstructor();
+  BlogRepository._privateConstructor();
 
   Future<List<Blog>> getBlogs() async {
 
@@ -34,7 +31,6 @@ class BlogApi {
       // load blogs from local storage
       var blogs = await StorageManager.getData('blogs');
       return getBlogsFromJson(blogs as String);
-
     }
   }
 

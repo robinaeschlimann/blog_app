@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:blog_app/service/storage_manager.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +14,7 @@ class BrightnessNotifier extends ChangeNotifier {
   BrightnessNotifier() {
     StorageManager.getData('brightness').then((value) {
       if (value == null || value is! bool) {
-        WidgetsBinding widgetsBinding = WidgetsBinding.instance;
-        Brightness systemBrightness = widgetsBinding?.window.platformBrightness ?? Brightness.light;
+        Brightness systemBrightness = PlatformDispatcher.instance.platformBrightness;
 
         setBrightness(systemBrightness == Brightness.dark);
 
@@ -33,7 +34,6 @@ class BrightnessNotifier extends ChangeNotifier {
     else {
       return Brightness.light;
     }
-
   }
 
   Future<void> setBrightness(bool value) async {

@@ -1,5 +1,5 @@
-import '../blog.dart';
-import 'blog_api.dart';
+import '../data/blog.dart';
+import '../repository/blog_repository.dart';
 
 /// This class is a singleton and provides the blog data.
 class BlogService {
@@ -12,8 +12,6 @@ class BlogService {
   BlogService._internal();
 
   Future<List<Blog>> getBlogs() async {
-    BlogApi blogApi = BlogApi.instance;
-
-    return await blogApi.getBlogs();
+    return await BlogRepository.instance.getBlogs();
   }
 }
