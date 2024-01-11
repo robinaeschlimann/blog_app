@@ -12,7 +12,12 @@ class BrightnessNotifier extends ChangeNotifier {
   BrightnessNotifier() {
     StorageManager.getData('brightness').then((value) {
       if (value == null || value is! bool) {
-        _brightness = Brightness.light;
+        WidgetsBinding widgetsBinding = WidgetsBinding.instance;
+        Brightness systemBrightness = widgetsBinding?.window.platformBrightness ?? Brightness.light;
+
+        setBrightness(systemBrightness == Brightness.dark);
+
+        _brightness = systemBrightness;
       }
       else {
         _brightness = _getBrightness(value);

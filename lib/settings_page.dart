@@ -7,7 +7,7 @@ class SettingsState extends ChangeNotifier {
   var darkMode = false;
 
   Future<Switch> getDarkMode() async {
-    bool darkMode = await StorageManager.getData('brightness') ?? false;
+    bool darkMode = BrightnessNotifier.instance.brightness == Brightness.dark;
 
     return Switch(value: darkMode, onChanged: (val) => setDarkMode(val));
   }
@@ -37,26 +37,30 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       body: ListView(
+
         children: [
           const SettingsListTile(title: "Profile", leadingIcon: Icons.person, trailing: Icon(Icons.arrow_forward_ios)),
-          SettingsListTile(title: "Dark Mode", leadingIcon: Icons.dark_mode, trailing: FutureBuilder(future: settingsState.getDarkMode(), builder: (context, snapshot) {
-            if( snapshot.connectionState == ConnectionState.done )
-            {
-              if( snapshot.hasError ) {
+          SettingsListTile(title: "Dark Mode", leadingIcon: Icons.dark_mode, trailing: FutureBuilder(
+            future: settingsState.getDarkMode(),
+            builder: (context, snapshot) {
+              if( snapshot.connectionState == ConnectionState.done )
+              {
+                if( snapshot.hasError ) {
+                  return const Center(
+                    child: Text("Error while loading dark mode"),
+                  );
+                }
+
+                return snapshot.data as Switch;
+              }
+              else
+              {
                 return const Center(
-                  child: Text("Error while loading dark mode"),
+                  child: CircularProgressIndicator(),
                 );
               }
-
-              return snapshot.data as Switch;
-            }
-            else
-            {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-          },)),
+            })
+          ),
           const SettingsListTile(title: "Favorites", leadingIcon: Icons.favorite, trailing: Icon(Icons.arrow_forward_ios)),
           const SettingsListTile(title: "Language", leadingIcon: Icons.language, trailing: Icon(Icons.arrow_forward_ios)),
           const SettingsListTile ( title: "Setting XY", leadingIcon: Icons.settings, trailing: Icon(Icons.arrow_forward_ios) ),

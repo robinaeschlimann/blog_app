@@ -23,12 +23,12 @@ class BlogApp extends StatelessWidget {
       const secondaryColor = Colors.white;
 
       return Consumer<BrightnessNotifier> (
-          builder: (context, brightness, _) => MaterialApp(
+          builder: (context, brightnessNotifier, _) => MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
                 seedColor: primaryColor,
-                brightness: brightness.brightness,
+                brightness: brightnessNotifier.brightness,
               ),
               useMaterial3: true,
               appBarTheme: const AppBarTheme(
@@ -36,7 +36,7 @@ class BlogApp extends StatelessWidget {
                 foregroundColor: secondaryColor,
               ),
               tabBarTheme: TabBarTheme(
-                overlayColor: MaterialStateProperty.all(const Color(0xFFC5264E)),
+                overlayColor: MaterialStateProperty.all(primaryColor),
                 labelColor: secondaryColor,
                 unselectedLabelColor: Colors.white70,
 
