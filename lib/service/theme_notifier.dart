@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:blog_app/data/storage_key.dart';
 import 'package:blog_app/service/storage_manager.dart';
+import 'package:blog_app/utils/logger.util.dart';
 import 'package:flutter/material.dart';
 
 class BrightnessNotifier extends ChangeNotifier {
@@ -12,8 +14,9 @@ class BrightnessNotifier extends ChangeNotifier {
   Brightness get brightness => _brightness;
 
   BrightnessNotifier() {
-    StorageManager.getData('brightness').then((value) {
+    StorageManager.getData(StorageKey.brightness.key).then((value) {
       if (value == null || value is! bool) {
+        getLogger().d("Brightness is not set, using system brightness");
         Brightness systemBrightness = PlatformDispatcher.instance.platformBrightness;
 
         setBrightness(systemBrightness == Brightness.dark);
@@ -40,6 +43,6 @@ class BrightnessNotifier extends ChangeNotifier {
     _brightness = _getBrightness(value);
     notifyListeners();
 
-    StorageManager.saveData('brightness', value);
+    StorageManager.saveData(StorageKey.brightness.key, value);
   }
 }

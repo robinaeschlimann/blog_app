@@ -1,4 +1,3 @@
-import 'package:blog_app/service/storage_manager.dart';
 import 'package:blog_app/service/theme_notifier.dart';
 import 'package:blog_app/widget/settings/settings_list_tile.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +13,6 @@ class SettingsState extends ChangeNotifier {
   Future<void> setDarkMode(bool value) async {
     BrightnessNotifier.instance.setBrightness(value);
     notifyListeners();
-
-    StorageManager.saveData('brightness', value);
   }
 }
 

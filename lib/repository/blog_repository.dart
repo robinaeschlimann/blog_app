@@ -1,12 +1,16 @@
 import 'dart:convert';
 
+import 'package:blog_app/data/blog.dart';
+import 'package:blog_app/data/storage_key.dart';
 import 'package:blog_app/service/storage_manager.dart';
+import 'package:blog_app/utils/logger.util.dart';
 
-import '../data/blog.dart';
 import 'package:http/http.dart' as http;
 
 class BlogRepository {
   static BlogRepository instance = BlogRepository._privateConstructor();
+
+  var logger = getLogger();
   BlogRepository._privateConstructor();
 
   Future<List<Blog>> getBlogs() async {
@@ -18,20 +22,25 @@ class BlogRepository {
       });
 
       if(response.statusCode == 200) {
-        StorageManager.saveData('blogs', response.body);
+        StorageManager.saveData(StorageKey.blogs.key, response.body);
 
         return getBlogsFromJson(response.body);
       } else {
         // If the server did not return a 200 OK response,
         // then throw an exception.
+        logger.e("Failed to load blogs, status code: ${response.statusCode}, reason: ${response.reasonPhrase}");
         throw Exception('Failed to load blogs');
       }
     }
     catch (e) {
       // load blogs from local storage
-      var blogs = await StorageManager.getData('blogs');
-      return getBlogsFromJson(blogs as String);
+      return await loadBlogsFromStorage();
     }
+  }
+
+  Future<List<Blog>> loadBlogsFromStorage() async {
+    var blogs = await StorageManager.getData(StorageKey.blogs.key);
+    return getBlogsFromJson(blogs as String);
   }
 
   List<Blog> getBlogsFromJson( String json )
