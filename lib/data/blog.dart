@@ -12,6 +12,7 @@ class Blog {
     required this.content,
     required this.publishedAt,
     required this.headerImageUrl,
+    required this.isLikedByMe
   });
 
   String get publishedDateString =>
@@ -32,6 +33,7 @@ class Blog {
             content: content,
             publishedAt: DateTime.parse(publishedAt),
             headerImageUrl: headerImageUrl ?? "https://picsum.photos/100",
+            isLikedByMe: false
           ),
       _ => throw const FormatException("Unexpected JSON structure", ),
     };

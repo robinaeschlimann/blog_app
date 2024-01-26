@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:blog_app/data/blog.dart';
 import 'package:blog_app/data/storage_key.dart';
+import 'package:blog_app/repository/blog_repository_db.dart';
 import 'package:blog_app/service/storage_manager.dart';
 import 'package:blog_app/utils/logger.util.dart';
-
 import 'package:http/http.dart' as http;
 
 class BlogRepository {
@@ -24,7 +24,10 @@ class BlogRepository {
       if(response.statusCode == 200) {
         StorageManager.saveData(StorageKey.blogs.key, response.body);
 
-        return getBlogsFromJson(response.body);
+        var blogs = getBlogsFromJson(response.body);
+        BlogRepositoryDB.instance.saveBlogs(blogs);
+
+        return blogs;
       } else {
         // If the server did not return a 200 OK response,
         // then throw an exception.
@@ -33,14 +36,9 @@ class BlogRepository {
       }
     }
     catch (e) {
-      // load blogs from local storage
-      return await loadBlogsFromStorage();
+      // load blogs from local database
+      return await BlogRepositoryDB.instance.getBlogs();
     }
-  }
-
-  Future<List<Blog>> loadBlogsFromStorage() async {
-    var blogs = await StorageManager.getData(StorageKey.blogs.key);
-    return getBlogsFromJson(blogs as String);
   }
 
   List<Blog> getBlogsFromJson( String json )
