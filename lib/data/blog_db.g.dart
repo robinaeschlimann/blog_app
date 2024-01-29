@@ -32,23 +32,28 @@ const BlogDBSchema = CollectionSchema(
       name: r'creationDate',
       type: IsarType.dateTime,
     ),
-    r'headerImageUrl': PropertySchema(
+    r'headerImage': PropertySchema(
       id: 3,
+      name: r'headerImage',
+      type: IsarType.string,
+    ),
+    r'headerImageUrl': PropertySchema(
+      id: 4,
       name: r'headerImageUrl',
       type: IsarType.string,
     ),
     r'isLikedByMe': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'isLikedByMe',
       type: IsarType.bool,
     ),
     r'publishedAt': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'publishedAt',
       type: IsarType.dateTime,
     ),
     r'title': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'title',
       type: IsarType.string,
     )
@@ -75,6 +80,7 @@ int _blogDBEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.apiId.length * 3;
   bytesCount += 3 + object.content.length * 3;
+  bytesCount += 3 + object.headerImage.length * 3;
   bytesCount += 3 + object.headerImageUrl.length * 3;
   bytesCount += 3 + object.title.length * 3;
   return bytesCount;
@@ -89,10 +95,11 @@ void _blogDBSerialize(
   writer.writeString(offsets[0], object.apiId);
   writer.writeString(offsets[1], object.content);
   writer.writeDateTime(offsets[2], object.creationDate);
-  writer.writeString(offsets[3], object.headerImageUrl);
-  writer.writeBool(offsets[4], object.isLikedByMe);
-  writer.writeDateTime(offsets[5], object.publishedAt);
-  writer.writeString(offsets[6], object.title);
+  writer.writeString(offsets[3], object.headerImage);
+  writer.writeString(offsets[4], object.headerImageUrl);
+  writer.writeBool(offsets[5], object.isLikedByMe);
+  writer.writeDateTime(offsets[6], object.publishedAt);
+  writer.writeString(offsets[7], object.title);
 }
 
 BlogDB _blogDBDeserialize(
@@ -105,11 +112,12 @@ BlogDB _blogDBDeserialize(
   object.apiId = reader.readString(offsets[0]);
   object.content = reader.readString(offsets[1]);
   object.creationDate = reader.readDateTime(offsets[2]);
-  object.headerImageUrl = reader.readString(offsets[3]);
+  object.headerImage = reader.readString(offsets[3]);
+  object.headerImageUrl = reader.readString(offsets[4]);
   object.id = id;
-  object.isLikedByMe = reader.readBool(offsets[4]);
-  object.publishedAt = reader.readDateTime(offsets[5]);
-  object.title = reader.readString(offsets[6]);
+  object.isLikedByMe = reader.readBool(offsets[5]);
+  object.publishedAt = reader.readDateTime(offsets[6]);
+  object.title = reader.readString(offsets[7]);
   return object;
 }
 
@@ -129,10 +137,12 @@ P _blogDBDeserializeProp<P>(
     case 3:
       return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readBool(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 6:
+      return (reader.readDateTime(offset)) as P;
+    case 7:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -536,6 +546,136 @@ extension BlogDBQueryFilter on QueryBuilder<BlogDB, BlogDB, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'headerImage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'headerImage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'headerImage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'headerImage',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'headerImage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'headerImage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'headerImage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'headerImage',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'headerImage',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterFilterCondition> headerImageIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'headerImage',
+        value: '',
       ));
     });
   }
@@ -958,6 +1098,18 @@ extension BlogDBQuerySortBy on QueryBuilder<BlogDB, BlogDB, QSortBy> {
     });
   }
 
+  QueryBuilder<BlogDB, BlogDB, QAfterSortBy> sortByHeaderImage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'headerImage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterSortBy> sortByHeaderImageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'headerImage', Sort.desc);
+    });
+  }
+
   QueryBuilder<BlogDB, BlogDB, QAfterSortBy> sortByHeaderImageUrl() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'headerImageUrl', Sort.asc);
@@ -1044,6 +1196,18 @@ extension BlogDBQuerySortThenBy on QueryBuilder<BlogDB, BlogDB, QSortThenBy> {
     });
   }
 
+  QueryBuilder<BlogDB, BlogDB, QAfterSortBy> thenByHeaderImage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'headerImage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BlogDB, BlogDB, QAfterSortBy> thenByHeaderImageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'headerImage', Sort.desc);
+    });
+  }
+
   QueryBuilder<BlogDB, BlogDB, QAfterSortBy> thenByHeaderImageUrl() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'headerImageUrl', Sort.asc);
@@ -1126,6 +1290,13 @@ extension BlogDBQueryWhereDistinct on QueryBuilder<BlogDB, BlogDB, QDistinct> {
     });
   }
 
+  QueryBuilder<BlogDB, BlogDB, QDistinct> distinctByHeaderImage(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'headerImage', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<BlogDB, BlogDB, QDistinct> distinctByHeaderImageUrl(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1176,6 +1347,12 @@ extension BlogDBQueryProperty on QueryBuilder<BlogDB, BlogDB, QQueryProperty> {
   QueryBuilder<BlogDB, DateTime, QQueryOperations> creationDateProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'creationDate');
+    });
+  }
+
+  QueryBuilder<BlogDB, String, QQueryOperations> headerImageProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'headerImage');
     });
   }
 

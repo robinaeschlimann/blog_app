@@ -11,5 +11,6 @@ class BlogDB {
   DateTime publishedAt = DateTime.now();
   bool isLikedByMe = false;
   String headerImageUrl = '';
+  String headerImage = '';
   DateTime creationDate = DateTime.now();
 }

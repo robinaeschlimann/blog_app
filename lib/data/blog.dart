@@ -5,6 +5,7 @@ class Blog {
   DateTime publishedAt;
   bool isLikedByMe = false;
   String headerImageUrl;
+  String? headerImage;
 
   Blog({
     required this.id,
@@ -12,6 +13,7 @@ class Blog {
     required this.content,
     required this.publishedAt,
     required this.headerImageUrl,
+    required this.headerImage,
     required this.isLikedByMe
   });
 
@@ -33,6 +35,7 @@ class Blog {
             content: content,
             publishedAt: DateTime.parse(publishedAt),
             headerImageUrl: headerImageUrl ?? "https://picsum.photos/100",
+            headerImage: null,
             isLikedByMe: false
           ),
       _ => throw const FormatException("Unexpected JSON structure", ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:blog_app/data/blog.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +13,9 @@ class BlogCard extends StatelessWidget {
 
     return Wrap(
       children: [
-        Image(
-            image: NetworkImage(blog.headerImageUrl)
-        ),
+        blog.headerImage != null ?
+          Image.memory(base64Decode(blog.headerImage!)) :
+          Image(image: NetworkImage(blog.headerImageUrl)),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
