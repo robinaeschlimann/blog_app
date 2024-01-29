@@ -1,6 +1,5 @@
 enum StorageKey {
-  brightness ( key: 'brightness' ),
-  blogs ( key: 'blogs' );
+  brightness ( key: 'brightness' );
 
   const StorageKey({required this.key});
 
