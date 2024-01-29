@@ -1,10 +1,9 @@
 import 'dart:convert';
 
+import 'package:blog_app/data/blog.dart';
+import 'package:blog_app/repository/blog_repository.dart';
 import 'package:blog_app/utils/logger.util.dart';
 import 'package:http/http.dart' as http;
-
-import '../data/blog.dart';
-import '../repository/blog_repository.dart';
 
 /// This class is a singleton and provides the blog data.
 class BlogService {

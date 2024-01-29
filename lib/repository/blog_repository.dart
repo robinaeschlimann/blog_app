@@ -1,8 +1,7 @@
 import 'package:blog_app/data/blog.dart';
+import 'package:blog_app/data/blog_db.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
-
-import '../data/blog_db.dart';
 
 
 class BlogRepository {
