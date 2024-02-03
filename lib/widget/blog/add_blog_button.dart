@@ -1,3 +1,4 @@
+import 'package:blog_app/pages/blog_add_page.dart';
 import 'package:flutter/material.dart';
 
 class AddBlogButton extends StatelessWidget {
@@ -13,7 +14,11 @@ class AddBlogButton extends StatelessWidget {
       child: FloatingActionButton(
         backgroundColor: const Color(0xFFC5264E),
         onPressed: () async {
-
+          Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const BlogAddPage(),
+              )
+          );
         },
         child: const Icon(Icons.add),
       ),
