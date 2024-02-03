@@ -94,12 +94,25 @@ class _BlogAddPageState extends State<BlogAddPage> {
 
                     if( success )
                     {
-                      scaffoldMessengerState.showSnackBar(const SnackBar(content: Text("Blog added"), backgroundColor: Colors.green));
+                      scaffoldMessengerState.showSnackBar(
+                          const SnackBar(
+                              content: Text("Blog added"),
+                              backgroundColor: Colors.green,
+                              showCloseIcon: true
+                          )
+                      );
+
                       Navigator.of(context).pop();
                     }
                     else
                     {
-                      scaffoldMessengerState.showSnackBar(const SnackBar(content: Text("Error while adding blog"), backgroundColor: Colors.red,));
+                      scaffoldMessengerState.showSnackBar(
+                          const SnackBar(
+                            content: Text("Error while adding blog"),
+                            backgroundColor: Colors.red,
+                            showCloseIcon: true
+                          )
+                      );
                     }
                   }
                 },
