@@ -1,3 +1,5 @@
+import 'package:blog_app/data/blog.dart';
+import 'package:blog_app/service/blog_service.dart';
 import 'package:flutter/material.dart';
 
 class BlogAddPage extends StatefulWidget {
@@ -11,6 +13,7 @@ class _BlogAddPageState extends State<BlogAddPage> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
+  final _imageUrlController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +52,56 @@ class _BlogAddPageState extends State<BlogAddPage> {
                 },
                 maxLines: 10,
               ),
-              ElevatedButton(
-                onPressed: () {
+              TextFormField(
+                controller: _imageUrlController,
+                decoration: const InputDecoration(
+                  labelText: "Image URL",
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Please enter an image URL";
+                  }
 
+                  if( !Uri.parse(value).isAbsolute )
+                  {
+                    return "Please enter a valid URL";
+                  }
+
+                  return null;
+                },
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    var title = _titleController.value.text;
+                    var content = _contentController.value.text;
+                    var imageUrl = _imageUrlController.value.text;
+
+                    // Add blog
+                    var success = await BlogService.instance.addBlog(
+                        Blog(
+                            id: null,
+                            title: title,
+                            content: content,
+                            publishedAt: DateTime.now(),
+                            headerImageUrl: imageUrl,
+                            headerImage: null,
+                            isLikedByMe: false
+                        )
+                    );
+
+                    var scaffoldMessengerState = ScaffoldMessenger.of(context);
+
+                    if( success )
+                    {
+                      scaffoldMessengerState.showSnackBar(const SnackBar(content: Text("Blog added"), backgroundColor: Colors.green));
+                      Navigator.of(context).pop();
+                    }
+                    else
+                    {
+                      scaffoldMessengerState.showSnackBar(const SnackBar(content: Text("Error while adding blog"), backgroundColor: Colors.red,));
+                    }
+                  }
                 },
                 child: const Text("Add Blog"),
               )

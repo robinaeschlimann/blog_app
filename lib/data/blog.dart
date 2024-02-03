@@ -1,5 +1,5 @@
 class Blog {
-  String id;
+  String? id;
   String title;
   String content;
   DateTime publishedAt;

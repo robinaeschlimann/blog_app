@@ -60,7 +60,7 @@ class BlogRepository {
   Future<List<BlogDB>> _createBlogDB ( List<Blog> blogs )
   {
     return Future.wait(blogs.map((blog) async => BlogDB()
-      ..apiId = blog.id
+      ..apiId = blog.id!
       ..title = blog.title
       ..content = blog.content
       ..publishedAt = blog.publishedAt

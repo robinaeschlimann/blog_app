@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class BlogState extends ChangeNotifier {
-    var blogService = BlogService();
+    var blogService = BlogService.instance;
 
     Future<List<Blog>> get blogs async => await blogService.getBlogs();
 
