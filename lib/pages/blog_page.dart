@@ -1,4 +1,5 @@
 import 'package:blog_app/data/blog.dart';
+import 'package:blog_app/pages/blog_detail_page.dart';
 import 'package:blog_app/service/blog_service.dart';
 import 'package:blog_app/widget/blog/add_blog_button.dart';
 import 'package:blog_app/widget/blog/blog_card.dart';
@@ -9,12 +10,6 @@ class BlogState extends ChangeNotifier {
     var blogService = BlogService.instance;
 
     Future<List<Blog>> get blogs async => await blogService.getBlogs();
-
-    Future<bool> addBlog(Blog blog) async {
-      notifyListeners();
-
-      return true;
-    }
 }
 
 class BlogPage extends StatefulWidget {
@@ -62,7 +57,12 @@ class _BlogPageState extends State<BlogPage> {
       itemCount: snapshot.data!.length,
       itemBuilder: (BuildContext context, int index) {
         var blog = snapshot.data![index];
-        return BlogCard( blog: blog );
+        return GestureDetector(
+          child: BlogCard( blog: blog ),
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogDetailPage(blog: blog)));
+          }
+        );
       },
       separatorBuilder: (BuildContext context, int index) {
         return const Divider();
