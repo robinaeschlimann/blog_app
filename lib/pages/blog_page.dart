@@ -60,7 +60,22 @@ class _BlogPageState extends State<BlogPage> {
         return GestureDetector(
           child: BlogCard( blog: blog ),
           onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogDetailPage(blog: blog)));
+            Navigator.of(context).push(
+                PageRouteBuilder(
+                    pageBuilder: (context, animation, secondaryAnimation) => BlogDetailPage(blog: blog),
+                    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                      var begin = const Offset(1.0, 0.0);
+                      var end = Offset.zero;
+                      var curve = Curves.ease;
+                      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                      var offsetAnimation = animation.drive(tween);
+                      return SlideTransition(
+                        position: offsetAnimation,
+                        child: child,
+                      );
+                    }
+                )
+            );
           }
         );
       },
