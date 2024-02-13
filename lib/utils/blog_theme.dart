@@ -52,7 +52,17 @@ class BlogTheme
       switchTheme: SwitchThemeData(
         thumbColor: MaterialStateProperty.all(brightnessNotifier.brightness == Brightness.light ? Colors.grey.shade600 : inactiveColor),
         trackColor: MaterialStateProperty.all(brightnessNotifier.brightness == Brightness.light ? secondaryColor : primaryColor),
-
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(primaryColor),
+          foregroundColor: MaterialStateProperty.all(secondaryColor),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+        ),
       ),
     );
   }

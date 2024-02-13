@@ -70,53 +70,56 @@ class _BlogAddPageState extends State<BlogAddPage> {
                   return null;
                 },
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    var title = _titleController.value.text;
-                    var content = _contentController.value.text;
-                    var imageUrl = _imageUrlController.value.text;
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      var title = _titleController.value.text;
+                      var content = _contentController.value.text;
+                      var imageUrl = _imageUrlController.value.text;
 
-                    // Add blog
-                    var success = await BlogService.instance.addBlog(
-                        Blog(
-                            id: null,
-                            title: title,
-                            content: content,
-                            publishedAt: DateTime.now(),
-                            headerImageUrl: imageUrl,
-                            headerImage: null,
-                            isLikedByMe: false
-                        )
-                    );
+                      // Add blog
+                      var success = await BlogService.instance.addBlog(
+                          Blog(
+                              id: null,
+                              title: title,
+                              content: content,
+                              publishedAt: DateTime.now(),
+                              headerImageUrl: imageUrl,
+                              headerImage: null,
+                              isLikedByMe: false
+                          )
+                      );
 
-                    var scaffoldMessengerState = ScaffoldMessenger.of(context);
+                      var scaffoldMessengerState = ScaffoldMessenger.of(context);
 
-                    if( success )
-                    {
-                      scaffoldMessengerState.showSnackBar(
-                          const SnackBar(
-                              content: Text("Blog added"),
-                              backgroundColor: Colors.green,
+                      if( success )
+                      {
+                        scaffoldMessengerState.showSnackBar(
+                            const SnackBar(
+                                content: Text("Blog added"),
+                                backgroundColor: Colors.green,
+                                showCloseIcon: true
+                            )
+                        );
+
+                        Navigator.of(context).pop();
+                      }
+                      else
+                      {
+                        scaffoldMessengerState.showSnackBar(
+                            const SnackBar(
+                              content: Text("Error while adding blog"),
+                              backgroundColor: Colors.red,
                               showCloseIcon: true
-                          )
-                      );
-
-                      Navigator.of(context).pop();
+                            )
+                        );
+                      }
                     }
-                    else
-                    {
-                      scaffoldMessengerState.showSnackBar(
-                          const SnackBar(
-                            content: Text("Error while adding blog"),
-                            backgroundColor: Colors.red,
-                            showCloseIcon: true
-                          )
-                      );
-                    }
-                  }
-                },
-                child: const Text("Add Blog"),
+                  },
+                  child: const Text("Add Blog"),
+                ),
               )
             ],
           ),
