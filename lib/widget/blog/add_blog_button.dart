@@ -8,11 +8,7 @@ class AddBlogButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: 16,
-      right: 16,
-      child: FloatingActionButton(
-        backgroundColor: const Color(0xFFC5264E),
+    return IconButton(
         onPressed: () async {
           Navigator.of(context).push(
               MaterialPageRoute(
@@ -20,8 +16,7 @@ class AddBlogButton extends StatelessWidget {
               )
           );
         },
-        child: const Icon(Icons.add),
-      ),
-    );
+        icon: const Icon(Icons.add),
+      );
   }
 }

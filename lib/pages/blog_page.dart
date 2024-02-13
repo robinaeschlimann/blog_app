@@ -1,7 +1,6 @@
 import 'package:blog_app/data/blog.dart';
 import 'package:blog_app/pages/blog_detail_page.dart';
 import 'package:blog_app/service/blog_service.dart';
-import 'package:blog_app/widget/blog/add_blog_button.dart';
 import 'package:blog_app/widget/blog/blog_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +41,6 @@ class _BlogPageState extends State<BlogPage> {
             }
           }
         ),
-        const AddBlogButton()
     ]);
   }
 

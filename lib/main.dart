@@ -1,6 +1,7 @@
 import 'package:blog_app/pages/settings_page.dart';
 import 'package:blog_app/utils/blog_theme.dart';
 import 'package:blog_app/service/theme_notifier.dart';
+import 'package:blog_app/widget/blog/add_blog_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'pages/blog_page.dart';
@@ -40,19 +41,8 @@ class BlogAppPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: const Text("Blog App"),
-            actions: [
-              IconButton(
-                onPressed: () {
-
-                },
-                icon: const Icon(Icons.search),
-              ),
-              IconButton(
-                onPressed: () {
-
-                },
-                icon: const Icon(Icons.person)
-              ),
+            actions: const [
+              AddBlogButton(),
             ],
           ),
           bottomNavigationBar: const BlogNavigationBar(),
