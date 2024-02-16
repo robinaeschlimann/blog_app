@@ -55,6 +55,7 @@ class BlogTheme
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
+          padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 32, vertical: 16)),
           backgroundColor: MaterialStateProperty.all(primaryColor),
           foregroundColor: MaterialStateProperty.all(secondaryColor),
           shape: MaterialStateProperty.all(
@@ -62,6 +63,11 @@ class BlogTheme
               borderRadius: BorderRadius.circular(8),
             ),
           ),
+        ),
+      ),
+      snackBarTheme: const SnackBarThemeData(
+        contentTextStyle: TextStyle(
+          color: secondaryColor,
         ),
       ),
     );

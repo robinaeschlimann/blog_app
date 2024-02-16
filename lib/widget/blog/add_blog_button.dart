@@ -12,7 +12,7 @@ class AddBlogButton extends StatelessWidget {
         onPressed: () async {
           Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const BlogAddPage(),
+                builder: (context) => const BlogFormPage(),
               )
           );
         },

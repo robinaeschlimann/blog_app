@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:blog_app/data/blog.dart';
+import 'package:blog_app/pages/blog_add_page.dart';
 import 'package:blog_app/service/blog_service.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,7 @@ class BlogCard extends StatelessWidget {
                         const Spacer(flex: 2),
                         IconButton(
                             icon: const Icon( Icons.edit ),
-                            onPressed: () => {}
+                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogFormPage( blog: blog )))
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),

@@ -2,14 +2,23 @@ import 'package:blog_app/data/blog.dart';
 import 'package:blog_app/service/blog_service.dart';
 import 'package:flutter/material.dart';
 
-class BlogAddPage extends StatefulWidget {
-  const BlogAddPage({super.key});
+class BlogFormPage extends StatefulWidget {
+  const BlogFormPage({super.key, this.blog});
+
+  final Blog? blog;
+
+  get getBlog => blog;
 
   @override
-  _BlogAddPageState createState() => _BlogAddPageState();
+  _BlogFormPageState createState() => _BlogFormPageState( blog );
 }
 
-class _BlogAddPageState extends State<BlogAddPage> {
+class _BlogFormPageState extends State<BlogFormPage> {
+
+  _BlogFormPageState(this.blog);
+
+  Blog? blog;
+
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
@@ -17,9 +26,12 @@ class _BlogAddPageState extends State<BlogAddPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    initValues();
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Blog"),
+        title: Text(blog == null ? "Add Blog" : "Edit Blog" )
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -79,26 +91,46 @@ class _BlogAddPageState extends State<BlogAddPage> {
                       var content = _contentController.value.text;
                       var imageUrl = _imageUrlController.value.text;
 
-                      // Add blog
-                      var success = await BlogService.instance.addBlog(
-                          Blog(
-                              id: null,
-                              title: title,
-                              content: content,
-                              publishedAt: DateTime.now(),
-                              headerImageUrl: imageUrl,
-                              headerImage: null,
-                              isLikedByMe: false
-                          )
-                      );
+                      var success = false;
+
+                      if( blog != null )
+                      {
+                        // Edit blog
+                        success = await BlogService.instance.editBlog(
+                            Blog(
+                                id: blog!.id,
+                                title: title,
+                                content: content,
+                                publishedAt: blog!.publishedAt,
+                                headerImageUrl: imageUrl,
+                                headerImage: null,
+                                isLikedByMe: blog!.isLikedByMe
+                            )
+                        );
+                      }
+                      else
+                      {
+                        // Add blog
+                        success = await BlogService.instance.addBlog(
+                            Blog(
+                                id: null,
+                                title: title,
+                                content: content,
+                                publishedAt: DateTime.now(),
+                                headerImageUrl: imageUrl,
+                                headerImage: null,
+                                isLikedByMe: false
+                            )
+                        );
+                      }
 
                       var scaffoldMessengerState = ScaffoldMessenger.of(context);
 
                       if( success )
                       {
                         scaffoldMessengerState.showSnackBar(
-                            const SnackBar(
-                                content: Text("Blog added"),
+                            SnackBar(
+                                content: Text(blog == null ? "Blog added" : "Blog edited"),
                                 backgroundColor: Colors.green,
                                 showCloseIcon: true
                             )
@@ -109,8 +141,8 @@ class _BlogAddPageState extends State<BlogAddPage> {
                       else
                       {
                         scaffoldMessengerState.showSnackBar(
-                            const SnackBar(
-                              content: Text("Error while adding blog"),
+                            SnackBar(
+                              content: Text(blog == null ? "Error while adding blog" : "Error while editing blog" ),
                               backgroundColor: Colors.red,
                               showCloseIcon: true
                             )
@@ -118,7 +150,7 @@ class _BlogAddPageState extends State<BlogAddPage> {
                       }
                     }
                   },
-                  child: const Text("Add Blog"),
+                  child: const Text("Save"),
                 ),
               )
             ],
@@ -126,5 +158,11 @@ class _BlogAddPageState extends State<BlogAddPage> {
         ),
       ),
     );
+  }
+
+  void initValues() {
+    _titleController.value = blog == null ? TextEditingValue.empty : TextEditingValue(text: blog!.title);
+    _contentController.value = blog == null ? TextEditingValue.empty : TextEditingValue(text: blog!.content);
+    _imageUrlController.value = blog == null ? TextEditingValue.empty : TextEditingValue(text: blog!.headerImageUrl);
   }
 }
