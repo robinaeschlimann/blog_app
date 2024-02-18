@@ -9,6 +9,22 @@ class BlogState extends ChangeNotifier {
     var blogService = BlogService.instance;
 
     Future<List<Blog>> get blogs async => await blogService.getBlogs();
+
+    deleteBlog( String blogId, BuildContext context ) async {
+      var success = await blogService.deleteBlog(blogId);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(success ? "Blog deleted" : "Error while deleting blog"),
+          backgroundColor: success ? Colors.green : Colors.red,
+          duration: const Duration(seconds: 2),
+        ),
+      );
+
+      Navigator.of(context).pop();
+
+      notifyListeners();
+    }
 }
 
 class BlogPage extends StatefulWidget {
@@ -31,7 +47,7 @@ class _BlogPageState extends State<BlogPage> {
           builder: (context, snapshot) {
             if( snapshot.connectionState == ConnectionState.done )
             {
-              return handleBlogsLoaded(snapshot);
+              return handleBlogsLoaded(snapshot, blogState);
             }
             else
             {
@@ -44,7 +60,7 @@ class _BlogPageState extends State<BlogPage> {
     ]);
   }
 
-  Widget handleBlogsLoaded(AsyncSnapshot<List<Blog>> snapshot) {
+  Widget handleBlogsLoaded(AsyncSnapshot<List<Blog>> snapshot, BlogState blogState ) {
     if( snapshot.hasError ) {
       return const Center(
         child: Text("Error while loading blogs"),
@@ -56,7 +72,7 @@ class _BlogPageState extends State<BlogPage> {
       itemBuilder: (BuildContext context, int index) {
         var blog = snapshot.data![index];
         return GestureDetector(
-          child: BlogCard( blog: blog ),
+          child: BlogCard( blog: blog, blogState: blogState ),
           onTap: () {
             Navigator.of(context).push(
                 PageRouteBuilder(

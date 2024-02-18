@@ -2,13 +2,14 @@ import 'dart:convert';
 
 import 'package:blog_app/data/blog.dart';
 import 'package:blog_app/pages/blog_add_page.dart';
-import 'package:blog_app/service/blog_service.dart';
+import 'package:blog_app/pages/blog_page.dart';
 import 'package:flutter/material.dart';
 
 class BlogCard extends StatelessWidget {
-  const BlogCard({super.key, required this.blog});
+  const BlogCard({super.key, required this.blog, required this.blogState});
 
   final Blog blog;
+  final BlogState blogState;
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +53,7 @@ class BlogCard extends StatelessWidget {
                         IconButton(
                           icon: const Icon(Icons.delete),
                           onPressed: () async {
-                            confirmDeletionDialog(context);
-                            // todo: refresh blog list
+                            confirmDeletionDialog(context, blogState);
                           },
                         ),
                       ],
@@ -68,7 +68,7 @@ class BlogCard extends StatelessWidget {
     );
   }
   
-  Future<void> confirmDeletionDialog( BuildContext context ) {
+  Future<void> confirmDeletionDialog( BuildContext context, BlogState blogState ) {
     return showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -81,18 +81,7 @@ class BlogCard extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-
-                var success = await BlogService.instance.deleteBlog(blog.id!);
-
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(success ? "Blog deleted" : "Error while deleting blog"),
-                    backgroundColor: success ? Colors.green : Colors.red,
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-
-                Navigator.of(context).pop();
+                blogState.deleteBlog(blog.id!, context);
               },
               child: const Text("Delete"),
             ),
