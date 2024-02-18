@@ -1,23 +1,26 @@
 import 'package:blog_app/data/blog.dart';
+import 'package:blog_app/pages/blog_page.dart';
 import 'package:blog_app/service/blog_service.dart';
 import 'package:flutter/material.dart';
 
 class BlogFormPage extends StatefulWidget {
-  const BlogFormPage({super.key, this.blog});
+  const BlogFormPage({super.key, this.blog, required this.blogState});
 
   final Blog? blog;
+  final BlogState blogState;
 
   get getBlog => blog;
 
   @override
-  _BlogFormPageState createState() => _BlogFormPageState( blog );
+  _BlogFormPageState createState() => _BlogFormPageState( blog, blogState );
 }
 
 class _BlogFormPageState extends State<BlogFormPage> {
 
-  _BlogFormPageState(this.blog);
+  _BlogFormPageState(this.blog, this.blogState);
 
   Blog? blog;
+  final BlogState blogState;
 
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
@@ -96,7 +99,7 @@ class _BlogFormPageState extends State<BlogFormPage> {
                       if( blog != null )
                       {
                         // Edit blog
-                        success = await BlogService.instance.editBlog(
+                        success = await blogState.editBlog(
                             Blog(
                                 id: blog!.id,
                                 title: title,
@@ -111,7 +114,7 @@ class _BlogFormPageState extends State<BlogFormPage> {
                       else
                       {
                         // Add blog
-                        success = await BlogService.instance.addBlog(
+                        success = await blogState.addBlog(
                             Blog(
                                 id: null,
                                 title: title,

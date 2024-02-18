@@ -35,16 +35,9 @@ class BlogAppPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-            title: const Text("Blog App"),
-            actions: const [
-              AddBlogButton(),
-            ],
-          ),
           bottomNavigationBar: const BlogNavigationBar(),
           body: TabBarView(
             children: [

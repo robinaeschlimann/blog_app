@@ -1,4 +1,5 @@
 import 'package:blog_app/data/blog.dart';
+import 'package:blog_app/pages/blog_add_page.dart';
 import 'package:blog_app/pages/blog_detail_page.dart';
 import 'package:blog_app/service/blog_service.dart';
 import 'package:blog_app/widget/blog/blog_card.dart';
@@ -10,20 +11,30 @@ class BlogState extends ChangeNotifier {
 
     Future<List<Blog>> get blogs async => await blogService.getBlogs();
 
+    addBlog( Blog blog )
+    {
+      var success = blogService.addBlog(blog);
+      notifyListeners();
+
+      return success;
+    }
+
+    editBlog( Blog blog ) async
+    {
+      var success = await blogService.editBlog(blog);
+      notifyListeners();
+
+      return success;
+    }
+
     deleteBlog( String blogId, BuildContext context ) async {
       var success = await blogService.deleteBlog(blogId);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(success ? "Blog deleted" : "Error while deleting blog"),
-          backgroundColor: success ? Colors.green : Colors.red,
-          duration: const Duration(seconds: 2),
-        ),
-      );
 
       Navigator.of(context).pop();
 
       notifyListeners();
+
+      return success;
     }
 }
 
@@ -40,24 +51,42 @@ class _BlogPageState extends State<BlogPage> {
 
     var blogState = context.watch<BlogState>();
 
-    return Stack(
-      children: [
-        FutureBuilder<List<Blog>>(
-          future: blogState.blogs,
-          builder: (context, snapshot) {
-            if( snapshot.connectionState == ConnectionState.done )
-            {
-              return handleBlogsLoaded(snapshot, blogState);
-            }
-            else
-            {
-              return const Center(
-                child: CircularProgressIndicator(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Blogs"),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => BlogFormPage( blogState: blogState ),
+                  )
               );
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
+      ),
+      body: Stack(
+        children: [
+          FutureBuilder<List<Blog>>(
+            future: blogState.blogs,
+            builder: (context, snapshot) {
+              if( snapshot.connectionState == ConnectionState.done )
+              {
+                return handleBlogsLoaded(snapshot, blogState);
+              }
+              else
+              {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
             }
-          }
-        ),
-    ]);
+          ),
+        ]
+      )
+    );
   }
 
   Widget handleBlogsLoaded(AsyncSnapshot<List<Blog>> snapshot, BlogState blogState ) {

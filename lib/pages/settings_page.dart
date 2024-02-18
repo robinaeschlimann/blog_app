@@ -30,6 +30,9 @@ class _SettingsPageState extends State<SettingsPage> {
     var settingsState = context.watch<SettingsState>();
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Settings"),
+      ),
       body: ListView(
         children: [
           const SettingsListTile(title: "Profile", leadingIcon: Icons.person),

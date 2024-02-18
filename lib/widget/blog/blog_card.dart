@@ -48,7 +48,7 @@ class BlogCard extends StatelessWidget {
                         const Spacer(flex: 2),
                         IconButton(
                             icon: const Icon( Icons.edit ),
-                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogFormPage( blog: blog )))
+                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogFormPage( blog: blog, blogState: blogState, )))
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete),
@@ -81,7 +81,15 @@ class BlogCard extends StatelessWidget {
             ),
             TextButton(
               onPressed: () async {
-                blogState.deleteBlog(blog.id!, context);
+                var success = await blogState.deleteBlog(blog.id!, context);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(success ? "Blog deleted" : "Error while deleting blog"),
+                    backgroundColor: success ? Colors.green : Colors.red,
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
               },
               child: const Text("Delete"),
             ),
