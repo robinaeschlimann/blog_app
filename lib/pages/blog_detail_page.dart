@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:blog_app/data/blog.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +19,9 @@ class BlogDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Image.network(blog.headerImageUrl),
+            blog.headerImage != null ?
+              Image.memory(base64Decode(blog.headerImage!)) :
+              Image.network(blog.headerImageUrl),
             const SizedBox(height: 10),
             Text(blog.title, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),

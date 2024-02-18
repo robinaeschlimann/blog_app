@@ -31,35 +31,32 @@ class BlogCard extends StatelessWidget {
                   child: Text(blog.content.length > 100 ? "${blog.content.substring(0, 100)}..." : blog.content )
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: Wrap(
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                            icon: blog.isLikedByMe ? const Icon( Icons.favorite ) : const Icon( Icons.favorite_border ),
-                            color: const Color( 0xFFC5264E ),
-                            constraints: const BoxConstraints(),
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all(EdgeInsets.zero)
-                            ),
-                            onPressed: () => {}
-                        ),
-                        const Spacer(flex: 2),
-                        IconButton(
-                            icon: const Icon( Icons.edit ),
-                            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogFormPage( blog: blog, blogState: blogState, )))
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () async {
-                            confirmDeletionDialog(context, blogState);
-                          },
-                        ),
-                      ],
-                    ),
-                  ]
-                ),
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: blog.isLikedByMe ? const Icon( Icons.favorite ) : const Icon( Icons.favorite_border ),
+                    color: const Color( 0xFFC5264E ),
+                    onPressed: () => {},
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon( Icons.edit ),
+                        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogFormPage( blog: blog, blogState: blogState, )))
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () async {
+                          confirmDeletionDialog(context, blogState);
+                        },
+                      ),
+                    ],
+                  ),
+
+                ],
+              ),
               ),
             ],
           ),
