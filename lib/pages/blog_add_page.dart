@@ -1,6 +1,5 @@
 import 'package:blog_app/data/blog.dart';
 import 'package:blog_app/pages/blog_page.dart';
-import 'package:blog_app/service/blog_service.dart';
 import 'package:flutter/material.dart';
 
 class BlogFormPage extends StatefulWidget {
@@ -12,12 +11,12 @@ class BlogFormPage extends StatefulWidget {
   get getBlog => blog;
 
   @override
-  _BlogFormPageState createState() => _BlogFormPageState( blog, blogState );
+  BlogFormPageState createState() => BlogFormPageState( blog, blogState );
 }
 
-class _BlogFormPageState extends State<BlogFormPage> {
+class BlogFormPageState extends State<BlogFormPage> {
 
-  _BlogFormPageState(this.blog, this.blogState);
+  BlogFormPageState(this.blog, this.blogState);
 
   Blog? blog;
   final BlogState blogState;
