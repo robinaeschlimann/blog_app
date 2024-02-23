@@ -19,7 +19,7 @@ class BlogCard extends StatelessWidget {
       children: [
         blog.headerImage != null ?
           Image.memory(base64Decode(blog.headerImage!)) :
-          Image(image: NetworkImage(blog.headerImageUrl)),
+          Image(image: NetworkImage("${blog.headerImageUrl}?${DateTime.now().millisecondsSinceEpoch.toString()}")),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(

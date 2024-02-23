@@ -34,7 +34,7 @@ class Blog {
             title: title,
             content: content,
             publishedAt: DateTime.parse(publishedAt),
-            headerImageUrl: headerImageUrl ?? "https://picsum.photos/100",
+            headerImageUrl: headerImageUrl ?? "https://picsum.photos/800/200",
             headerImage: null,
             isLikedByMe: false
           ),
