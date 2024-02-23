@@ -21,11 +21,14 @@ class BlogApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<BrightnessNotifier> (
-        builder: (context, brightnessNotifier, _) => MaterialApp(
+      builder: (context, brightnessNotifier, _) => ChangeNotifierProvider(
+        create: (context) => BlogState(),
+        child: MaterialApp(
           title: 'Blog App',
           debugShowCheckedModeBanner: false,
           theme: BlogTheme.getTheme(brightnessNotifier),
           home: const BlogAppPage(),
+        ),
       )
     );
   }
@@ -42,7 +45,7 @@ class BlogAppPage extends StatelessWidget {
           bottomNavigationBar: const BlogNavigationBar(),
           body: TabBarView(
             children: [
-              ChangeNotifierProvider(create: (context) => BlogState(), child: const BlogPage()),
+              const BlogPage(),
               ChangeNotifierProvider(create: (context) => SettingsState(), child: const SettingsPage()),
             ]
           ),

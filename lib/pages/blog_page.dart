@@ -1,7 +1,7 @@
 import 'package:blog_app/data/blog.dart';
-import 'package:blog_app/pages/blog_add_page.dart';
 import 'package:blog_app/pages/blog_detail_page.dart';
 import 'package:blog_app/states/blog_state.dart';
+import 'package:blog_app/widget/blog/add_blog_button.dart';
 import 'package:blog_app/widget/blog/blog_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,17 +22,8 @@ class _BlogPageState extends State<BlogPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Blogs"),
-        actions: [
-          IconButton(
-            onPressed: () async {
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BlogFormPage( blogState: blogState ),
-                  )
-              );
-            },
-            icon: const Icon(Icons.add),
-          )
+        actions: const [
+          AddBlogButton()
         ],
       ),
       body: Stack(
@@ -69,7 +60,7 @@ class _BlogPageState extends State<BlogPage> {
       itemBuilder: (BuildContext context, int index) {
         var blog = snapshot.data![index];
         return GestureDetector(
-          child: BlogCard( blog: blog, blogState: blogState ),
+          child: BlogCard( blog: blog ),
           onTap: () {
             Navigator.of(context).push(
                 PageRouteBuilder(

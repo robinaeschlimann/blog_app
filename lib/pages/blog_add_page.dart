@@ -1,25 +1,24 @@
 import 'package:blog_app/data/blog.dart';
 import 'package:blog_app/states/blog_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BlogFormPage extends StatefulWidget {
-  const BlogFormPage({super.key, this.blog, required this.blogState});
+  const BlogFormPage({super.key, this.blog});
 
   final Blog? blog;
-  final BlogState blogState;
 
   get getBlog => blog;
 
   @override
-  BlogFormPageState createState() => BlogFormPageState( blog, blogState );
+  BlogFormPageState createState() => BlogFormPageState( blog );
 }
 
 class BlogFormPageState extends State<BlogFormPage> {
 
-  BlogFormPageState(this.blog, this.blogState);
+  BlogFormPageState(this.blog);
 
   Blog? blog;
-  final BlogState blogState;
 
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
@@ -29,6 +28,7 @@ class BlogFormPageState extends State<BlogFormPage> {
   @override
   Widget build(BuildContext context) {
 
+    var blogState = context.read<BlogState>();
     initValues();
 
     return Scaffold(

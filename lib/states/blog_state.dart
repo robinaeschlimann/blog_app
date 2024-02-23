@@ -7,9 +7,9 @@ class BlogState extends ChangeNotifier {
 
   Future<List<Blog>> get blogs async => await blogService.getBlogs();
 
-  addBlog( Blog blog )
+  addBlog( Blog blog ) async
   {
-    var success = blogService.addBlog(blog);
+    var success = await blogService.addBlog(blog);
     notifyListeners();
 
     return success;

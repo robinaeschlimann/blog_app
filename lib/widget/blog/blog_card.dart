@@ -4,15 +4,17 @@ import 'package:blog_app/data/blog.dart';
 import 'package:blog_app/pages/blog_add_page.dart';
 import 'package:blog_app/states/blog_state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BlogCard extends StatelessWidget {
-  const BlogCard({super.key, required this.blog, required this.blogState});
+  const BlogCard({super.key, required this.blog});
 
   final Blog blog;
-  final BlogState blogState;
 
   @override
   Widget build(BuildContext context) {
+
+    var blogState = context.read<BlogState>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +46,7 @@ class BlogCard extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon( Icons.edit ),
-                        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogFormPage( blog: blog, blogState: blogState, )))
+                        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => BlogFormPage( blog: blog )))
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete),
