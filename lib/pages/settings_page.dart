@@ -35,8 +35,6 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: ListView(
         children: [
-          const SettingsListTile(title: "Profile", leadingIcon: Icons.person),
-          const SettingsListTile(title: "Favorites", leadingIcon: Icons.favorite),
           SettingsListTile(title: "Dark Mode", leadingIcon: Icons.dark_mode,
             trailing: SizedBox(
               width: 50,
