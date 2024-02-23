@@ -1,5 +1,6 @@
 import 'package:blog_app/pages/settings_page.dart';
 import 'package:blog_app/service/theme_notifier.dart';
+import 'package:blog_app/states/blog_state.dart';
 import 'package:blog_app/utils/blog_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

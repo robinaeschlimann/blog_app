@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:blog_app/data/blog.dart';
 import 'package:blog_app/pages/blog_add_page.dart';
-import 'package:blog_app/pages/blog_page.dart';
+import 'package:blog_app/states/blog_state.dart';
 import 'package:flutter/material.dart';
 
 class BlogCard extends StatelessWidget {

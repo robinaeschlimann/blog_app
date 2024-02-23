@@ -1,7 +1,7 @@
 # Blog-App
 
 This is a flutter app that allows users to create, read, update and delete blog posts. 
-It uses a Appwrite backend to store the blog posts.
+It uses an Appwrite backend to store the blog posts.
 
 ## Offline Support
 The app uses a local database called Isar. This allows the user to read the blogs offline and sync with the Appwrite backend when the user is online.
